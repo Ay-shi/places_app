@@ -11,7 +11,7 @@ class PlaceLocation {
 class Place {
   String id;
   String title;
-  PlaceLocation location;
+  PlaceLocation? location; //temp null
   File image;
   Place(
       {required this.id,
