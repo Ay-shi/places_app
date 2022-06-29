@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/models/place.dart';
+import '/helpers/db_helper.dart';
 import 'dart:io';
 
 class Places with ChangeNotifier {
@@ -10,11 +11,11 @@ class Places with ChangeNotifier {
   }
 
   void addPlace(String placeTitle, File placeImage) {
-    _places.add(Place(
-        title: placeTitle,
-        image: placeImage,
-        id: DateTime.now().toString(),
-        location: null));
+    final id = DateTime.now().toString();
+    _places.add(
+        Place(title: placeTitle, image: placeImage, id: id, location: null));
     notifyListeners();
+    DBHelper.insert(
+        'places', {"title": placeTitle, "id": id, "image": placeImage.path});
   }
 }
