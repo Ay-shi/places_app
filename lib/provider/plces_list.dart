@@ -15,7 +15,20 @@ class Places with ChangeNotifier {
     _places.add(
         Place(title: placeTitle, image: placeImage, id: id, location: null));
     notifyListeners();
-    DBHelper.insert(
-        'places', {"title": placeTitle, "id": id, "image": placeImage.path});
+    DBHelper.insert('user_places',
+        {"title": placeTitle, "id": id, "image": placeImage.path});
+  }
+
+  Future<void> fetchAndSetPlace() async {
+    final loadedPlaces = await DBHelper.getData("user_places");
+    _places = loadedPlaces
+        .map((item) => Place(
+            id: item["id"] as String,
+            title: item["title"] as String,
+            location: null,
+            image: File(item["image"] as String)))
+        .toList();
+
+    notifyListeners();
   }
 }
